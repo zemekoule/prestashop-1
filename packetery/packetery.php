@@ -603,7 +603,50 @@ class Packetery extends CarrierModule
                 }
             }
         }
+
+        $this->context->smarty->assign('testForm', $this->displayChangePickupPointForm($params));
         return $this->display(__FILE__, 'display_order_main.tpl');
+    }
+
+    // http://doc.prestashop.com/display/PS16/Using+the+HelperForm+class
+    // https://devdocs.prestashop.com/1.7/modules/creation/adding-configuration-page/#using-helperform
+    private function displayChangePickupPointForm($params)
+    {
+        $fieldsForm[0]['form'] = [
+            'input' => [
+                [
+                    'type' => 'hidden',
+                    'name' => 'order_id',
+                ],
+                [
+                    'type' => 'hidden',
+                    'name' => 'pickup_point',
+                ],
+            ],
+            'submit' => [
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-primary',
+            ],
+        ];
+
+        $helper = new HelperForm();
+        $helper->module = $this;
+
+        // see https://devdocs.prestashop.com/1.7/modules/core-updates/1.7.5/
+        if (version_compare(_PS_VERSION_, '1.7.5', '<')) {
+            // Code compliant from PrestaShop 1.5 to 1.7.4
+            $returnUrl = $this->context->link->getAdminLink('AdminOrders') . '&id_order=' . $params['id_order'] . '&vieworder#packetaPickupPointChange';
+        } else {
+            // Recommended code from PrestaShop 1.7.5
+            $returnUrl = $this->context->link->getAdminLink('AdminOrders', true, [], ['id_order' => $params['id_order'], 'vieworder' => 1]) . '#packetaPickupPointChange';
+        }
+        $helper->currentIndex = $returnUrl;
+
+        // Load current value
+        $helper->fields_value['order_id'] = $params['id_order'];
+        $helper->fields_value['pickup_point'] = '';
+
+        return $helper->generateForm($fieldsForm);
     }
 
     // removed in 1.7.7 in favor of displayAdminOrderMain

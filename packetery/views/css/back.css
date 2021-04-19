@@ -119,3 +119,18 @@
 	margin-top: 1em;
 	padding-left: 3.5rem;
 }
+
+/* for helperForm */
+.packetery .panel-footer {
+	text-align: right;
+	border: 0 none;
+	background-color: white;
+}
+/* for 1.7.6 and lower todo: border */
+#content.bootstrap .packetery.panel .panel-footer {
+	border: 0 none;
+	background-color: white;
+}
+#content.bootstrap .packetery.panel .panel {
+	border: 0 none;
+}

@@ -29,5 +29,7 @@
                 <div class="alert alert-danger">{$messageError}</div>
             {/if}
         {/if}
+
+        {$testForm}
     </div>
 </div>
