@@ -55,7 +55,33 @@ function PacketeryCheckoutModulesManager() {
     this.getWidgetParent = function ($selectedInput) {
         return $('#packetery-carrier-' + this.getCarrierId($selectedInput));
     }
+
+    this.clearSelectedPickupPoint = function (module) {
+        var $selectedInput = module.getSelectedInput();
+        var $extra = this.getWidgetParent($selectedInput);
+        $extra.find(".packeta-branch-id").val('');
+        $extra.find(".packeta-branch-name").val('');
+        $extra.find(".packeta-pickup-point-type").val('');
+        $extra.find(".packeta-carrier-id").val('');
+        $extra.find(".packeta-carrier-pickup-point-id").val('');
+        $extra.find(".picked-delivery-place").html('');
+        module.disableSubmitButton();
+    }
+
+    this.clearOrderBranch = function () {
+        $.ajax({
+            type: 'GET',
+            url: ajaxs.baseuri() + '/modules/packetery/ajax_front.php?action=clearOrderBranch' + ajaxs.checkToken(),
+            beforeSend: function () {
+                $("body").toggleClass("wait");
+            },
+            complete: function () {
+                $("body").toggleClass("wait");
+            },
+        });
+    }
 }
+
 var packeteryModulesManager = new PacketeryCheckoutModulesManager();
 var widgetCarriers;
 

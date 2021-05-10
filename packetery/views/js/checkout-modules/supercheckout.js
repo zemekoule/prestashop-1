@@ -3,7 +3,12 @@
 var PacketeryCheckoutModuleSupercheckout = {
 
     getSelectedInput: function () {
-        return $('#shipping-method input:checked');
+        var $checked = $('#shipping-method input:checked');
+        if ($checked.length === 1) {
+            return $checked;
+        }
+        // for the case of switching address for which selected delivery is no longer available
+        return $('#shipping-method input:eq(0)');
     },
 
     findDeliveryOptions: function () {
@@ -33,4 +38,8 @@ $(function () {
             }
         });
     }
+    $('input[name="shipping_address_value"], select[name="shipping_address_id"]').change(function () {
+        packeteryModulesManager.clearOrderBranch();
+        packeteryModulesManager.clearSelectedPickupPoint(PacketeryCheckoutModuleSupercheckout);
+    });
 });

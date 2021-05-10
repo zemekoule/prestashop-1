@@ -811,4 +811,32 @@ class PacketeryApi
         return $result;
     }
     /*END WIDGET*/
+
+    public static function clearOrderBranch()
+    {
+        $id_cart = Context::getContext()->cart->id;
+        if (!isset($id_cart)) {
+            return false;
+        }
+
+        $packeteryOrderFields = [
+            'id_branch' => 0,
+            'name_branch' => '',
+            'currency_branch' => '',
+            'id_carrier' => null,
+            'is_cod' => 0,
+            'is_ad' => 0,
+            'is_carrier' => 0,
+            'carrier_pickup_point' => null,
+        ];
+
+        $db = Db::getInstance();
+        $isOrderSaved = $db->getValue('SELECT 1 FROM `' . _DB_PREFIX_ . 'packetery_order` WHERE `id_cart` = ' . ((int)$id_cart));
+        if ($isOrderSaved) {
+            return $db->update('packetery_order', $packeteryOrderFields, '`id_cart` = ' . ((int)$id_cart));
+        }
+
+        return true;
+    }
+
 }

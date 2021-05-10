@@ -39,6 +39,9 @@ switch (Tools::getValue('action')) {
     case 'widgetsaveorderbranch':
         PacketeryApi::widgetSaveOrderBranch();
         break;
+    case 'clearOrderBranch':
+        PacketeryApi::clearOrderBranch();
+        break;
     default:
         exit;
 }

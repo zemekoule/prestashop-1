@@ -442,6 +442,7 @@ class Packetery extends CarrierModule
 		{
             $row = Db::getInstance()->getRow('SELECT * FROM ' . _DB_PREFIX_ . 'packetery_order WHERE id_cart =' . (int)$params['cart']->id . ' AND id_carrier = ' . (int)$id_carrier);
 
+            // TODO: continue only if "branchCountry" matches "customerCountry", then packeteryModulesManager.clearOrderBranch would not be needed
             $name_branch = $row['name_branch'];
             $currency_branch = $row['currency_branch'];
             $carrierPickupPointId = $row['carrier_pickup_point'];
